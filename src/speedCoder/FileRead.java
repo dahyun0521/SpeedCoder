@@ -14,7 +14,6 @@ public class FileRead {
             int i = 0;
             while ((i = fileInputStream.read()) != -1) {
                 System.out.print((char) i);
-                
             }
         } catch (FileNotFoundException e) {
             System.err.println("파일을 찾을 수 없습니다: " + e.getMessage());
