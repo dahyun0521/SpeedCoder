@@ -1,0 +1,9 @@
+<html>
+public static String testMethodName(TestName testName) {<br/>
+&emsp;String testMethodName = testName.getMethodName();<br/>
+&emsp;if (testMethodName.contains("[")) {<br/>
+&emsp;&emsp;testMethodName = testMethodName.substring(0, testMethodName.indexOf('['));<br/>
+&emsp;}<br/>
+&emsp;return testMethodName;<br/>
+}<br/>
+</html>

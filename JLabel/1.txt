@@ -1,0 +1,17 @@
+<html>
+public static int getFreePort() {<br/>
+&emsp;for (int i = 0; i < NUM_CANDIDATES; i++) {<br/>
+&emsp;&emsp;final int port = nextCandidatePort();<br/>
+&emsp;&emsp;final InetSocketAddress wildcardAddr = new InetSocketAddress(port);<br/>
+<br/>
+&emsp;&emsp;if (isTcpPortAvailable(wildcardAddr) &&<br/>
+&emsp;&emsp;&emsp;isTcpPortAvailable(loopbackAddr) &&<br/>
+&emsp;&emsp;&emsp;isUdpPortAvailable(wildcardAddr) &&<br/>
+&emsp;&emsp;&emsp;isUdpPortAvailable(loopbackAddr)) {<br/>
+&emsp;&emsp;&emsp;return port;<br/>
+&emsp;&emsp;}<br/>
+&emsp;}<br/>
+<br/>
+&emsp;throw new RuntimeException("unable to find a free port");<br/>
+}<br/>
+</html>

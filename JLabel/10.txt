@@ -1,0 +1,73 @@
+<html>
+public static void compressHeapDumps() throws IOException {<br/>
+&emsp;final File[] files = new File(System.getProperty("user.dir")).listFiles(new FilenameFilter() {<br/>
+&emsp;&emsp;@Override<br/>
+&emsp;&emsp;public boolean accept(File dir, String name) {<br/>
+&emsp;&emsp;&emsp;return name.endsWith(".hprof");<br/>
+&emsp;&emsp;}<br/>
+&emsp;});<br/>
+<br/>
+&emsp;final byte[] buf = new byte[65536];<br/>
+&emsp;final LZMA2Options options = new LZMA2Options(LZMA2Options.PRESET_DEFAULT);<br/>
+<br/>
+&emsp;for (File file: files) {<br/>
+&emsp;&emsp;final String filename = file.toString();<br/>
+&emsp;&emsp;final String xzFilename = filename + ".xz";<br/>
+&emsp;&emsp;final long fileLength = file.length();<br/>
+<br/>
+&emsp;&emsp;logger.info("Compressing the heap dump: {}", xzFilename);<br/>
+<br/>
+&emsp;&emsp;long lastLogTime = System.nanoTime();<br/>
+&emsp;&emsp;long counter = 0;<br/>
+<br/>
+&emsp;&emsp;InputStream in = null;<br/>
+&emsp;&emsp;OutputStream out = null;<br/>
+&emsp;&emsp;try {<br/>
+&emsp;&emsp;&emsp;in = new FileInputStream(filename);<br/>
+&emsp;&emsp;&emsp;out = new XZOutputStream(new FileOutputStream(xzFilename), options);<br/>
+&emsp;&emsp;&emsp;for (;;) {<br/>
+&emsp;&emsp;&emsp;&emsp;int readBytes = in.read(buf);<br/>
+&emsp;&emsp;&emsp;&emsp;if (readBytes < 0) {<br/>
+&emsp;&emsp;&emsp;&emsp;&emsp;break;<br/>
+&emsp;&emsp;&emsp;}<br/>
+&emsp;&emsp;&emsp;if (readBytes == 0) {<br/>
+&emsp;&emsp;&emsp;&emsp;continue;<br/>
+&emsp;&emsp;&emsp;}<br/>
+<br/>
+&emsp;&emsp;&emsp;out.write(buf, 0, readBytes);<br/>
+&emsp;&emsp;&emsp;counter += readBytes;<br/>
+<br/>
+&emsp;&emsp;&emsp;long currentTime = System.nanoTime();<br/>
+&emsp;&emsp;&emsp;if (currentTime - lastLogTime > DUMP_PROGRESS_LOGGING_INTERVAL) {<br/>
+&emsp;&emsp;&emsp;&emsp;logger.info("Compressing the heap dump: {} ({}%)",<br/>
+&emsp;&emsp;&emsp;&emsp;&emsp;xzFilename, counter * 100 / fileLength);<br/>
+&emsp;&emsp;&emsp;lastLogTime = currentTime;<br/>
+&emsp;&emsp;&emsp;}<br/>
+&emsp;&emsp;}<br/>
+&emsp;&emsp;out.close();<br/>
+&emsp;&emsp;in.close();<br/>
+&emsp;} catch (Throwable t) {<br/>
+&emsp;&emsp;logger.warn("Failed to compress the heap dump: {}", xzFilename, t);<br/>
+&emsp;} finally {<br/>
+&emsp;&emsp;if (in != null) {<br/>
+&emsp;&emsp;&emsp;try {<br/>
+&emsp;&emsp;&emsp;&emsp;in.close();<br/>
+&emsp;&emsp;&emsp;} catch (IOException ignored) {<br/>
+<br/>
+&emsp;&emsp;&emsp;}<br/>
+&emsp;&emsp;}<br/>
+&emsp;&emsp;if (out != null) {<br/>
+&emsp;&emsp;&emsp;try {<br/>
+&emsp;&emsp;&emsp;&emsp;out.close();<br/>
+&emsp;&emsp;&emsp;} catch (IOException ignored) {<br/>
+<br/>
+&emsp;&emsp;&emsp;}<br/>
+&emsp;&emsp;}<br/>
+&emsp;}<br/>
+<br/>
+&emsp;&emsp;if (!file.delete()) {<br/>
+&emsp;&emsp;&emsp;logger.warn("Failed to delete the uncompressed heap dump: {}", filename);<br/>
+&emsp;&emsp;}<br/>
+&emsp;}<br/>
+}<br/>
+</html>

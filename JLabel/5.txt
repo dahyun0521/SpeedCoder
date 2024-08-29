@@ -1,0 +1,9 @@
+<html>
+public static void compressHeapDumps() throws IOException {<br/>
+&emsp;final File[] files = new File(System.getProperty("user.dir")).listFiles(new FilenameFilter() {<br/>
+&emsp;&emsp;@Override<br/>
+&emsp;&emsp;&emsp;public boolean accept(File dir, String name) {<br/>
+&emsp;&emsp;&emsp;&emsp;return name.endsWith(".hprof");<br/>
+&emsp;&emsp;}<br/>
+&emsp;});<br/>
+</html>

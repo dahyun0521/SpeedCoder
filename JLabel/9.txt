@@ -1,0 +1,32 @@
+<html>
+private static void dumpThreads(File file) {<br/>
+&emsp;final String filename = file.toString();<br/>
+&emsp;OutputStream out = null;<br/>
+&emsp;try {<br/>
+&emsp;&emsp;logger.info("Dumping threads: {}", filename);<br/>
+&emsp;&emsp;final StringBuilder buf = new StringBuilder(8192);<br/>
+&emsp;&emsp;try {<br/>
+&emsp;&emsp;&emsp;for (ThreadInfo info : ManagementFactory.getThreadMXBean().dumpAllThreads(true, true)) {<br/>
+&emsp;&emsp;&emsp;&emsp;buf.append(info);<br/>
+&emsp;&emsp;&emsp;}<br/>
+&emsp;&emsp;&emsp;buf.append('\n');<br/>
+&emsp;&emsp;} catch (UnsupportedOperationException ignored) {<br/>
+&emsp;&emsp;&emsp;logger.warn("Can't dump threads: ThreadMXBean.dumpAllThreads() unsupported");<br/>
+&emsp;&emsp;&emsp;return;<br/>
+&emsp;&emsp;}<br/>
+<br/>
+&emsp;&emsp;out = new FileOutputStream(file);<br/>
+&emsp;&emsp;out.write(buf.toString().getBytes(CharsetUtil.UTF_8));<br/>
+&emsp;} catch (Exception e) {<br/>
+&emsp;&emsp;logger.warn("Failed to dump threads: {}", filename, e);<br/>
+&emsp;} finally {<br/>
+&emsp;&emsp;if (out != null) {<br/>
+&emsp;&emsp;&emsp;try {<br/>
+&emsp;&emsp;&emsp;&emsp;out.close();<br/>
+&emsp;&emsp;&emsp;} catch (IOException ignored) {<br/>
+<br/>
+&emsp;&emsp;&emsp;}<br/>
+&emsp;&emsp;}<br/>
+&emsp;}<br/>
+}<br/>
+</html>

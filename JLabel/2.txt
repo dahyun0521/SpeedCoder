@@ -1,0 +1,23 @@
+<html>
+private static boolean isTcpPortAvailable(InetSocketAddress localAddress) {<br/>
+&emsp;ServerSocket ss = null;<br/>
+&emsp;try {<br/>
+&emsp;&emsp;ss = new ServerSocket();<br/>
+&emsp;&emsp;ss.setReuseAddress(false);<br/>
+&emsp;&emsp;ss.bind(localAddress);<br/>
+&emsp;&emsp;ss.close();<br/>
+&emsp;&emsp;ss = null;<br/>
+&emsp;&emsp;return true;<br/>
+&emsp;} catch (Exception ignore) {<br/>
+&emsp;} finally {<br/>
+&emsp;&emsp;if (ss != null) {<br/>
+&emsp;&emsp;&emsp;try {<br/>
+&emsp;&emsp;&emsp;&emsp;ss.close();<br/>
+&emsp;&emsp;&emsp;} catch (IOException ignore) {<br/>
+&emsp;&emsp;&emsp;}<br/>
+&emsp;&emsp;}<br/>
+&emsp;}<br/>
+<br/>
+&emsp;return false;<br/>
+}<br/>
+</html>

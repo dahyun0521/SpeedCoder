@@ -9,11 +9,13 @@ public class FileRead {
     public static void main(String[] args) {
         FileInputStream fileInputStream = null;
         Scanner sc = new Scanner(System.in);
+        StringBuilder sb = new StringBuilder();
         try {
             fileInputStream = new FileInputStream("1.txt");
             int i = 0;
             while ((i = fileInputStream.read()) != -1) {
                 System.out.print((char) i);
+                sb.append((char)i);
             }
         } catch (FileNotFoundException e) {
             System.err.println("파일을 찾을 수 없습니다: " + e.getMessage());

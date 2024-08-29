@@ -1,0 +1,25 @@
+<html>
+public static boolean isSctpSupported() {<br/>
+&emsp;String os = System.getProperty("os.name").toLowerCase(Locale.UK);<br/>
+&emsp;if ("unix".equals(os) || "linux".equals(os) || "sun".equals(os) || "solaris".equals(os)) {<br/>
+&emsp;&emsp;try {<br/>
+&emsp;&emsp;&emsp;Class<?> sctpChannelClass = Class.forName("com.sun.nio.sctp.SctpChannel");<br/>
+&emsp;&emsp;&emsp;Channel channel = (Channel) sctpChannelClass.getMethod("open").invoke(null);<br/>
+&emsp;&emsp;&emsp;try {<br/>
+&emsp;&emsp;&emsp;&emsp;channel.close();<br/>
+&emsp;&emsp;&emsp;} catch (IOException e) {<br/>
+<br/>
+&emsp;&emsp;&emsp;}<br/>
+&emsp;&emsp;} catch (UnsupportedOperationException e) {<br/>
+&emsp;&emsp;&emsp;System.out.print("Not supported: " + e.getMessage());<br/>
+&emsp;&emsp;&emsp;return false;<br/>
+&emsp;&emsp;} catch (Throwable t) {<br/>
+&emsp;&emsp;&emsp;if (!(t instanceof IOException)) {<br/>
+&emsp;&emsp;&emsp;&emsp;return false;<br/>
+&emsp;&emsp;&emsp;}<br/>
+&emsp;&emsp;}<br/>
+&emsp;&emsp;return true;<br/>
+&emsp;}<br/>
+&emsp;return false;<br/>
+}<br/>
+</html>

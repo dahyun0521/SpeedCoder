@@ -1,0 +1,26 @@
+<html>
+public static void dump(String filenamePrefix) throws IOException {<br/>
+<br/>
+&emsp;&emsp;if (filenamePrefix == null) {<br/>
+&emsp;&emsp;&emsp;throw new NullPointerException("filenamePrefix");<br/>
+&emsp;&emsp;}<br/>
+<br/>
+&emsp;&emsp;final String timestamp = timestamp();<br/>
+&emsp;&emsp;final File heapDumpFile = new File(filenamePrefix + '.' + timestamp + ".hprof");<br/>
+&emsp;&emsp;if (heapDumpFile.exists()) {<br/>
+&emsp;&emsp;&emsp;if (!heapDumpFile.delete()) {<br/>
+&emsp;&emsp;&emsp;&emsp;throw new IOException("Failed to remove the old heap dump: " + heapDumpFile);<br/>
+&emsp;&emsp;&emsp;}<br/>
+&emsp;&emsp;}<br/>
+<br/>
+&emsp;&emsp;final File threadDumpFile = new File(filenamePrefix + '.' + timestamp + ".threads");<br/>
+&emsp;&emsp;if (threadDumpFile.exists()) {<br/>
+&emsp;&emsp;&emsp;if (!threadDumpFile.delete()) {<br/>
+&emsp;&emsp;&emsp;&emsp;throw new IOException("Failed to remove the old thread dump: " + threadDumpFile);<br/>
+&emsp;&emsp;&emsp;}<br/>
+&emsp;&emsp;}<br/>
+<br/>
+&emsp;&emsp;dumpHeap(heapDumpFile);<br/>
+&emsp;&emsp;dumpThreads(threadDumpFile);<br/>
+&emsp;}<br/>
+</html>

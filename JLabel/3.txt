@@ -1,0 +1,20 @@
+<html>
+private static boolean isUdpPortAvailable(InetSocketAddress localAddress) {<br/>
+&emsp;DatagramSocket ds = null;<br/>
+&emsp;try {<br/>
+&emsp;&emsp;ds = new DatagramSocket(null);<br/>
+&emsp;&emsp;ds.setReuseAddress(false);<br/>
+&emsp;&emsp;ds.bind(localAddress);<br/>
+&emsp;&emsp;ds.close();<br/>
+&emsp;&emsp;ds = null;<br/>
+&emsp;&emsp;return true;<br/>
+&emsp;} catch (Exception ignore) {<br/>
+&emsp;} finally {<br/>
+&emsp;&emsp;if (ds != null) {<br/>
+&emsp;&emsp;&emsp;ds.close();<br/>
+&emsp;&emsp;}<br/>
+&emsp;}<br/>
+<br/>
+&emsp;&emsp;return false;<br/>
+&emsp;}<br/>
+</html>
