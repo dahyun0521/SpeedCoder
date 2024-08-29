@@ -1,6 +1,8 @@
 package speedCoder;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
+
 import java.awt.*;
 
 public class ScView extends JFrame{
@@ -8,14 +10,16 @@ public class ScView extends JFrame{
 	JLabel text = new JLabel("text");
 	JFrame frm = new JFrame("SpeedCoder");
 	Font font = new Font("맑은 고딕", Font.BOLD, 30);
+	LineBorder lb = new LineBorder(Color.black, 1, false); 
 	
 	
 	ScView(){
-		frm.setBounds(120, 120, 300, 300);
-		frm.setLayout(new BorderLayout());
-		frm.getContentPane().setBackground(Color.WHITE);
+		frm.setBounds(120, 120, 700, 500);
+		// frm.setLayout(new BorderLayout());
+		frm.getContentPane().setBackground(Color.GRAY);
 		
-		text.setBounds(0, 0, 100, 100);
+		text.setBounds(0, 0, 300, 300);
+		// text.setBorder(lb);
 		
 		// 가운데 정렬
 		text.setHorizontalAlignment(JLabel.CENTER);
@@ -23,8 +27,8 @@ public class ScView extends JFrame{
 		// 폰트 서식 적용
 		text.setFont(font);
 		
-		text.setOpaque(true); //Opaque값을 true로 미리 설정해 주어야 배경색이 적용된다.
-		text.setBackground(Color.GREEN);
+		// text.setOpaque(true);
+		// text.setBackground(Color.GREEN);
 		
 		frm.add(text);
 		
