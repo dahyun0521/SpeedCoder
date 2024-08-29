@@ -1,0 +1,7 @@
+public static String testMethodName(TestName testName) {
+    String testMethodName = testName.getMethodName();
+    if (testMethodName.contains("[")) {
+        testMethodName = testMethodName.substring(0, testMethodName.indexOf('['));
+    }
+    return testMethodName;
+}

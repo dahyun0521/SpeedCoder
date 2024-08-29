@@ -1,0 +1,18 @@
+private static boolean isUdpPortAvailable(InetSocketAddress localAddress) {
+        DatagramSocket ds = null;
+        try {
+            ds = new DatagramSocket(null);
+            ds.setReuseAddress(false);
+            ds.bind(localAddress);
+            ds.close();
+            ds = null;
+            return true;
+        } catch (Exception ignore) {
+        } finally {
+            if (ds != null) {
+                ds.close();
+            }
+        }
+
+        return false;
+    }

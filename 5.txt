@@ -1,0 +1,7 @@
+public static void compressHeapDumps() throws IOException {
+    final File[] files = new File(System.getProperty("user.dir")).listFiles(new FilenameFilter() {
+        @Override
+        public boolean accept(File dir, String name) {
+            return name.endsWith(".hprof");
+        }
+    });

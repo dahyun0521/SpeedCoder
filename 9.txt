@@ -1,0 +1,30 @@
+private static void dumpThreads(File file) {
+    final String filename = file.toString();
+    OutputStream out = null;
+    try {
+        logger.info("Dumping threads: {}", filename);
+        final StringBuilder buf = new StringBuilder(8192);
+        try {
+            for (ThreadInfo info : ManagementFactory.getThreadMXBean().dumpAllThreads(true, true)) {
+                buf.append(info);
+            }
+            buf.append('\n');
+        } catch (UnsupportedOperationException ignored) {
+            logger.warn("Can't dump threads: ThreadMXBean.dumpAllThreads() unsupported");
+            return;
+        }
+
+        out = new FileOutputStream(file);
+        out.write(buf.toString().getBytes(CharsetUtil.UTF_8));
+    } catch (Exception e) {
+        logger.warn("Failed to dump threads: {}", filename, e);
+    } finally {
+        if (out != null) {
+            try {
+                out.close();
+            } catch (IOException ignored) {
+
+            }
+        }
+    }
+}

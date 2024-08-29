@@ -1,0 +1,14 @@
+private static void dumpHeap(File file) {
+        if (hotspotMXBean == null) {
+            logger.warn("Can't dump heap: HotSpotDiagnosticMXBean unavailable");
+            return;
+        }
+
+        final String filename = file.toString();
+        logger.info("Dumping heap: {}", filename);
+        try {
+            hotspotMXBeanDumpHeap.invoke(hotspotMXBean, filename, true);
+        } catch (Exception e) {
+            logger.warn("Failed to dump heap: {}", filename, e);
+        }
+    }

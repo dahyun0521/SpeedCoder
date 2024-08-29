@@ -1,0 +1,24 @@
+public static void dump(String filenamePrefix) throws IOException {
+
+        if (filenamePrefix == null) {
+            throw new NullPointerException("filenamePrefix");
+        }
+
+        final String timestamp = timestamp();
+        final File heapDumpFile = new File(filenamePrefix + '.' + timestamp + ".hprof");
+        if (heapDumpFile.exists()) {
+            if (!heapDumpFile.delete()) {
+                throw new IOException("Failed to remove the old heap dump: " + heapDumpFile);
+            }
+        }
+
+        final File threadDumpFile = new File(filenamePrefix + '.' + timestamp + ".threads");
+        if (threadDumpFile.exists()) {
+            if (!threadDumpFile.delete()) {
+                throw new IOException("Failed to remove the old thread dump: " + threadDumpFile);
+            }
+        }
+
+        dumpHeap(heapDumpFile);
+        dumpThreads(threadDumpFile);
+    }

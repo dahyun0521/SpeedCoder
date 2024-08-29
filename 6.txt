@@ -1,0 +1,23 @@
+ublic static boolean isSctpSupported() {
+    String os = System.getProperty("os.name").toLowerCase(Locale.UK);
+    if ("unix".equals(os) || "linux".equals(os) || "sun".equals(os) || "solaris".equals(os)) {
+        try {
+            Class<?> sctpChannelClass = Class.forName("com.sun.nio.sctp.SctpChannel");
+            Channel channel = (Channel) sctpChannelClass.getMethod("open").invoke(null);
+            try {
+                channel.close();
+            } catch (IOException e) {
+
+            }
+        } catch (UnsupportedOperationException e) {
+            System.out.print("Not supported: " + e.getMessage());
+            return false;
+        } catch (Throwable t) {
+            if (!(t instanceof IOException)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    return false;
+}
