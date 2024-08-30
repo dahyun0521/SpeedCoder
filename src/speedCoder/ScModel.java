@@ -9,7 +9,7 @@ public class ScModel {
 		FileInputStream fileInputStream = null;
 		StringBuilder sb = new StringBuilder();
 		try{
-			fileInputStream = new FileInputStream("jtextfield/"+10+".txt");
+			fileInputStream = new FileInputStream("jtextfield/"+1+".txt");
 			int i = 0;
 			while ((i = fileInputStream.read()) != -1) {
 //				System.out.print((char) i);

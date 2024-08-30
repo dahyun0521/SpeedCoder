@@ -1,14 +1,13 @@
 package speedCoder;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
-import java.awt.GridLayout;
+import java.awt.GridBagLayout;
 import java.awt.Toolkit;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -38,6 +37,7 @@ public class ScView extends JFrame {
 		contentPane.setBackground(Color.WHITE);
 		// 컨텐트팬 add
 		frm.add(contentPane);
+		panel1.setLayout(new GridBagLayout());
 		contentPane.add(panel1);
 		
 		// 화면창 가운데정렬
@@ -57,18 +57,21 @@ public class ScView extends JFrame {
 	}
 	
 	public void getStr() {
+		panel1.removeAll();
 		String originStr = ScModel.fileString();
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		
-		
 		for(int i = 0; i < originStr.length(); i++) {
-			if(originStr.charAt(i) == 13) {
+			if(originStr.charAt(i) == '\r') {
+				gbc.gridx = 0;
 				gbc.gridy++;
 			}
-			panel1.add(new ScLabel(String.valueOf(originStr.charAt(i))), gbc);
 			gbc.gridx++;
+			panel1.add(new ScLabel(String.valueOf(originStr.charAt(i))), gbc);
+			System.out.println((int)originStr.charAt(i));
+			
 		}
 	}
 	
@@ -100,7 +103,7 @@ public class ScView extends JFrame {
 			setFont(font);
 			setText(s);
 			Border border = getBorder();
-			Border margin = new EmptyBorder(4,4,4,4);
+			Border margin = new EmptyBorder(2,2,2,2);
 			setBorder(new CompoundBorder(border, margin));
 		}
 	}
