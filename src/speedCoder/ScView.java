@@ -1,22 +1,36 @@
 package speedCoder;
 
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridLayout;
+import java.awt.Toolkit;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.WindowConstants;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-import java.awt.*;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Scanner;
+
 
 public class ScView extends JFrame {
 	
 	JFrame frm = new JFrame("SpeedCoder");
 	Container contentPane = getContentPane();
 	JPanel panel1 = new JPanel();
+	
 	JLabel text = new JLabel(ScModel.fileString()); // 보여줄 코드
 	JTextField textField = new JTextField(); // 입력창
-	Font font = new Font("맑은 고딕", Font.BOLD, 18);
+	Font font = new Font("맑은 고딕", Font.BOLD, 12);
 	LineBorder lb = new LineBorder(Color.black, 1, false);
 
 	ScView(){
@@ -31,31 +45,31 @@ public class ScView extends JFrame {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		frm.setLocation((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height)/2);
 		
-		// textField : 입력창
-		
-		toString();
+		getStr();
 		
 		// text : 문자열이 맞는지 확인
 		text.setFont(font);
-		panel1.add(text);
+//		panel1.add(text);
 		
 		// 프레임 닫을 때 프로세스 종료
 		frm.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE); //X버튼 누를시 종료
         frm.setVisible(true);
 	}
 	
-	public String toString() {
-		String str = ScModel.fileString();
-		for(int i = 0; i < str.length()-1; i++) {
-			ScPanel panel = new ScPanel();
-			if(str.charAt(i) == 13 && str.charAt(i+1) == 10) {
-				
-				add(panel);
-			}
-			
-		}
+	public void getStr() {
+		String originStr = ScModel.fileString();
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.gridx = 0;
+		gbc.gridy = 0;
 		
-		return "1";
+		
+		for(int i = 0; i < originStr.length(); i++) {
+			if(originStr.charAt(i) == 13) {
+				gbc.gridy++;
+			}
+			panel1.add(new ScLabel(String.valueOf(originStr.charAt(i))), gbc);
+			gbc.gridx++;
+		}
 	}
 	
 	public class ScPanel extends JPanel{
@@ -63,27 +77,31 @@ public class ScView extends JFrame {
 		ScPanel(){
 			
 		}
-		public class TureScLabel extends JLabel{
-			
-			TureScLabel(){
-				setFont(font);
-			}
+		
+	}
+	public class TureScLabel extends JLabel{
+		
+		TureScLabel(){
+			setFont(font);
 		}
-		public class FalseScLabel extends JLabel{
-			
-			FalseScLabel(){
-				setOpaque(true);
-				setBackground(Color.RED);
-				setFont(font);
-			}
+	}
+	public class FalseScLabel extends JLabel{
+		
+		FalseScLabel(){
+			setOpaque(true);
+			setBackground(Color.RED);
+			setFont(font);
 		}
-		public class ScLabel extends JLabel{
-			
-			ScLabel(){
-				setOpaque(true);
-				setBackground(Color.ORANGE);
-				setFont(font);
-			}
+	}
+	public class ScLabel extends JLabel{
+		ScLabel(String s){
+			setOpaque(true);
+			setBackground(Color.ORANGE);
+			setFont(font);
+			setText(s);
+			Border border = getBorder();
+			Border margin = new EmptyBorder(4,4,4,4);
+			setBorder(new CompoundBorder(border, margin));
 		}
 	}
 	public static void main(String[] args) {
